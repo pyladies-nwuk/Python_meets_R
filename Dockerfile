@@ -1,36 +1,30 @@
 FROM jupyter/r-notebook
 
-LABEL maintainer="Tania Allard trallard@bitsandchips.me"
+# for reference see 
+# https://github.com/jupyterhub/jupyter-rsession-proxy/issues/69
 
-USER root
-
-ENV DEBIAN_FRONTEND noninteractive 
-
-# install Rstudio and packages
-RUN apt-get update \
-    && apt-get install -y gdebi-core \
-    && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.1335-amd64.deb \
-    && sudo gdebi rstudio-server-1.2.1335-amd64.deb \
-    && apt-get install -y --no-install-recommends \
-    libapparmor1 \
-    libedit2 \
-    lsb-release \
-    psmisc \
-    libssl1.0.0 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# install Pyton3 packages
-RUN conda install --quiet --yes \
-    'numpy' \
-    'pandas' \
+RUN python3 -m pip install jupyter-rsession-proxy
+RUN cd /tmp/ && \
+    git clone --depth 1 https://github.com/jupyterhub/jupyter-server-proxy && \
+    cd jupyter-server-proxy/jupyterlab-server-proxy && \
+    npm install && npm run build && jupyter labextension link . && \
+    npm run build && jupyter lab build \
+    conda install --quiet --yes \
     'matplotlib' \
+    'pandas' \
+    'numpy' \
     'r-reticulate' \
-    && conda clean --all -f -y \
-    && conda install -yq -c conda-forge nbrsessionproxy \
-    && conda clean -tipsy 
+    && conda clean --all -f -y 
 
+
+# install rstudio-server
+USER root
+RUN apt-get update && \
+    curl --silent -L --fail https://download2.rstudio.org/rstudio-server-1.1.419-amd64.deb > /tmp/rstudio.deb && \
+    echo '24cd11f0405d8372b4168fc9956e0386 /tmp/rstudio.deb' | md5sum -c - && \
+    apt-get install -y /tmp/rstudio.deb && \
+    rm /tmp/rstudio.deb && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+    
 ENV PATH=$PATH:/usr/lib/rstudio-server/bin
-ENV LD_LIBRARY_PATH="/usr/lib/R/lib:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server:/opt/conda/lib/R/lib"
-
 USER $NB_USER
