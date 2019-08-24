@@ -3,7 +3,7 @@ FROM jupyter/r-notebook
 # for reference see 
 # https://github.com/jupyterhub/jupyter-rsession-proxy/issues/69
 
-RUN python3 -m pip install jupyter-rsession-proxy
+RUN python3 -m pip install jupyter-rsession-proxy nbgitpuller
 RUN cd /tmp/ && \
     git clone --depth 1 https://github.com/jupyterhub/jupyter-server-proxy && \
     cd jupyter-server-proxy/jupyterlab-server-proxy && \
