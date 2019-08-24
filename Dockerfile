@@ -8,7 +8,7 @@ RUN cd /tmp/ && \
     git clone --depth 1 https://github.com/jupyterhub/jupyter-server-proxy && \
     cd jupyter-server-proxy/jupyterlab-server-proxy && \
     npm install && npm run build && jupyter labextension link . && \
-    npm run build && jupyter lab build \
+    npm run build && jupyter lab build && \
     conda install --quiet --yes \
     'matplotlib' \
     'pandas' \
@@ -25,6 +25,6 @@ RUN apt-get update && \
     apt-get install -y /tmp/rstudio.deb && \
     rm /tmp/rstudio.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-    
+
 ENV PATH=$PATH:/usr/lib/rstudio-server/bin
 USER $NB_USER
