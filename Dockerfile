@@ -14,14 +14,17 @@ ENV RSTUDIO_CHECKSUM 3c546fa9067f48ed1a342f810fca8be6
 
 # install Rstudio dependencies
 RUN apt-get -qq update --yes && \
-    apt-get -qq install -yes \
+    apt-get -qq install --yes \
     libapparmor1 \
     libedit2 \
     lsb-release \
     libssl1.0.0 \
     libgdal-dev \
     libproj-dev \
-    psmisc 
+    psmisc \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    libxml2-dev
 
 # install rstudio
 RUN curl --silent --location --fail ${RSTUDIO_URL} > /tmp/rstudio.deb && \

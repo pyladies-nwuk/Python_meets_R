@@ -1,16 +1,17 @@
 ---
 title: "Domando a la bestia: Python en R"
-author: "Tania Allard"
+author: "Tania Allard "
 date: Pyladies-Rladies Meetup CDMX 2019-08-27
 output:
   xaringan::moon_reader:
       css: [default, rladies, rladies-fonts, css/footer.css, css/styles.css]
       lib_dir: libs
-      nature: 
+      seal: false
+      nature:
         highlightStyle: github
-        highlightlines: true
+        highlightLines: true
         countIncrementalSlides: false
-        slideNumberFormat: ""
+        
 ---
 layout: true
 
@@ -21,4 +22,211 @@ layout: true
                      <a href="https://github.com/trallard">`r shiny::icon("github-alt")` </a> @trallard
                     </span></div>
       
+---
+
+# ¡Gracias por venir!
+
+- **Recordemos**: hay un código de conducta que toas y todos debemos observar todo el tiempo. Si notas algo que no va de acuerdo al código de conducta contacta a tus organizadoras.
+
+- No vamos a tomar preguntas después de las presentaciones pero puedes hablar con las ponentes en el descanso.
+
+- Necesitas tener una cuenta de GitHub para seguir el tutorial.
+
+---
+class: middle 
+
+# Gracias a todas las personas que hicieron esto posible
+
+- Pyladies CDMX
+
+- RLadies CDMX
+
+- Microsoft developer advocacy (Cynthia Zanoni ✨)
+
+- Stickermule
+
+- Platzi
+
+
+---
+
+
+# ¿Quién soy y  por qué estoy acá?
+.pull-left[
+![](assets/Bit_PUBLIC_SPEAKING.png)
+]
+
+.pull_right[
+## Tania Allard
+
+- Developer Advocate en Microsoft
+
+- Organizadora de PyLadies NorthWest UK
+
+- Miembro Rforwards - comunidad
+
+- Fellow de la Python Software Foundation
+
+- Y un montón de cosas mas
+]
+
+---
+class: center, middle
+
+# También 💜 Python y R
+
+
+---
+
+# Objetivos
+
+Este tutorial está diseñado para:
+- usuarios principiantes e intermedios de R y/o Python
+
+
+# Qué vamos a aprender:
+- **Principiante**: uso básico de Python y su uso desde R para proyectos multi lenguaje
+
+- **Intermedio**: mejore prácticas para trabajar con Python desde R
+
+---
+
+# Al final del tutorial podremos:
+
+- Pasar objetos entre sesiones simultáneasd de Ptyhon y R
+
+- Usar métodos de Python en código de R
+
+- Usar snippets de Python dentro de tu workflow en R (no necesitamos comprender al 100 lo que hacen `r emo::ji("shrug")`)
+
+Si tienes un entendimiento general de lo que Python hace y para qué son los métodos puedes usar reticulate.
+
+---
+
+# ¿Por qué usar reticulate?
+
+### Hacer tu trabajo más rápido
+- Los scientíficos de datos nos caracterisamos por nuestra habilidad para resolver problemas
+- El lenguaje debe ser secundario `r emo::ji("point_up")`
+- Evitar refactorizar o mantender dos codebases
+
+### Facilitar colaboración
+- Te permite aprovechar la experiencia y habilidades de todo el equipo
+- Resuelve el problema más grande de la industria de datos: la gente<sup>1</sup>
+- Muchos scientíficos de datos usan los dos leguajes y son más felices<sup>2</sup>
+
+.footnote[
+[1] Mangano, 2019  
+[2] Stack Overflow Developers' Survey, NanoMathius, 2018  
+]
+
+
+---
+
+# Reticulate
+
+### Características principales
+.pull_right[
+![reticulate-logo](assets/reticulated_python.png)]
+
+.pull_left[
+1. Habilidad de llamar Python desde R
+
+2. Traducción tntre objetos de R y Python
+
+3. Uso flexible de diferentes entornos de Python
+]
+
+---
+
+# Reticulate
+
+### Puedes usar Python de las siguientes maneras
+
+1. Interactivo usando la consola 
+`repl_python()`
+
+2. Ejecutando scripts de Python
+
+3. Importando módulos de Python
+
+4. En Rmarkdown
+
+---
+
+## Requisitos
+
+* [RStudio 1.2](https://www.rstudio.com/products/rstudio/) 
+
+* Python  
+  [Anaconda 3](https://www.anaconda.com/distribution/) 
+  
+  
+--
+
+* `reticulate` Yo casi siempre uso la versión de desarrollo:
+   ```{r eval=FALSE}
+   devtools::install_github("rstudio/reticulate")  
+   ```
+
+* Paquetes de Python y R necesarios (no listados acá)
+---
+
+
+class: inverse, center, middle
+
+# Ya comienza por favaaaar `r emo::ji("snake")`
+
+---
+
+
+## Fundamentos de Python
+
+Vamos a empezar creando un array
+
+En R:
+```{r eval=FALSE}
+r_array <- c(4, 5, 1, 6, 8)
+```
+
+--
+En Python usamos listas:
+```{python eval=FALSE}
+python_list = [4, 5, 1, 6, 8]
+```
+
+---
+
+
+## Fundamentos de Python
+
+But lists do not behave as a R user might expect.
+
+For example, what would you expect the output to be?
+
+```{python eval=FALSE}
+python_list = [4, 5, 1, 6, 8]
+*python_list * 2
+```
+
+--
+
+This?
+```{python eval=FALSE}
+python_list = [4, 5, 1, 6, 8]
+python_list * 2
+*[8, 10, 2, 12, 16]
+```
+
+--
+Infact it is this:
+```{python eval=FALSE}
+python_list = [4, 5, 1, 6, 8]
+python_list * 2
+*[4, 5, 1, 6, 8, 4, 5, 1, 6, 8]
+```
+
+
+`r emo::ji("shocked")`
+
 ---
