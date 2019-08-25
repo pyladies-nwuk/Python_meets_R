@@ -1,0 +1,24 @@
+---
+title: "Domando a la bestia: Python en R"
+author: "Tania Allard"
+date: Pyladies-Rladies Meetup CDMX 2019-08-27
+output:
+  xaringan::moon_reader:
+      css: [default, rladies, rladies-fonts, css/footer.css, css/styles.css]
+      lib_dir: libs
+      nature: 
+        highlightStyle: github
+        highlightlines: true
+        countIncrementalSlides: false
+        slideNumberFormat: ""
+---
+layout: true
+
+<div class="my-footer"><span> R meets Python  CDMX
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                     <a href="https://twitter.com/ixek">`r shiny::icon("twitter")` </a> @ixek
+                     <a href="https://github.com/trallard">`r shiny::icon("github-alt")` </a> @trallard
+                    </span></div>
+      
+---

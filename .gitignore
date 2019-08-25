@@ -166,3 +166,4 @@ dmypy.json
 
 # vs code
 .vscode/
+.Rproj.user
