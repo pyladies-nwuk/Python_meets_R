@@ -1,0 +1,12 @@
+numpy
+pandas
+scikit-learn
+matplotlib
+rpy2
+# base
+nbgitpuller==0.6.1
+# R
+jupyter-server-proxy==1.0.1
+jupyter-rsession-proxy==1.0b6
+# extensions
+nbresuse
