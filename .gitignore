@@ -167,3 +167,8 @@ dmypy.json
 # vs code
 .vscode/
 .Rproj.user
+
+.DS_Store
+
+# secrets
+deployments/jupyterhub-cluster/secrets/
