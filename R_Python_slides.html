@@ -205,9 +205,9 @@ python_list = [4, 5, 1, 6, 8]
 
 ## Fundamentos de Python
 
-But lists do not behave as a R user might expect.
+Pero en Python las listas no siempre funcionan como un usuario de R esperaría.
 
-For example, what would you expect the output to be?
+Por ejemplo, cuál es el resultado de:
 
 
 ```python
@@ -217,7 +217,7 @@ python_list = [4, 5, 1, 6, 8]
 
 --
 
-This?
+¿Esto?
 
 ```python
 python_list = [4, 5, 1, 6, 8]
@@ -226,7 +226,7 @@ python_list * 2
 ```
 
 --
-Infact it is this:
+No, en realidad es:
 
 ```python
 python_list = [4, 5, 1, 6, 8]
@@ -235,16 +235,45 @@ python_list * 2
 ```
 
 
-😨
+😲
 
 ---
+
+# Fundamentos de Python
+
+Para tener funcionalidades de arrays como los de R usamos el paquete [NumPy package](http://www.numpy.org/)&lt;sup&gt;1&lt;/sup&gt;.
+
+.footnote[
+[1] NumPy is the fundamental package for scientific computing with Python. It is part of the 
+SciPy ecosystem.  
+Jones E, Oliphant E, Peterson P, et al. SciPy: Open Source Scientific Tools for Python, 2001-, http://www.scipy.org/.
+]
+
+--
+
+```python
+import numpy as np
+python_array = np.array([4, 5, 1, 6, 8])
+```
+
+--
+Observa que en Python se usa el `.` para llamar métodos, por ejemeplo: `numpy.method_name()`.
+
+
+```python
+python_array.max()
+8
+```
+
+&lt;---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"countIncrementalSlides": false
+"countIncrementalSlides": false,
+"slideNumberFormat": ""
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

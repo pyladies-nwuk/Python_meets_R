@@ -11,6 +11,7 @@ output:
         highlightStyle: github
         highlightLines: true
         countIncrementalSlides: false
+        slideNumberFormat: ""
         
 ---
 layout: true
@@ -200,9 +201,9 @@ python_list = [4, 5, 1, 6, 8]
 
 ## Fundamentos de Python
 
-But lists do not behave as a R user might expect.
+Pero en Python las listas no siempre funcionan como un usuario de R esperaría.
 
-For example, what would you expect the output to be?
+Por ejemplo, cuál es el resultado de:
 
 ```{python eval=FALSE}
 python_list = [4, 5, 1, 6, 8]
@@ -211,7 +212,7 @@ python_list = [4, 5, 1, 6, 8]
 
 --
 
-This?
+¿Esto?
 ```{python eval=FALSE}
 python_list = [4, 5, 1, 6, 8]
 python_list * 2
@@ -219,7 +220,7 @@ python_list * 2
 ```
 
 --
-Infact it is this:
+No, en realidad es:
 ```{python eval=FALSE}
 python_list = [4, 5, 1, 6, 8]
 python_list * 2
@@ -230,3 +231,36 @@ python_list * 2
 `r emo::ji("shocked")`
 
 ---
+
+# Fundamentos de Python
+
+Para tener funcionalidades de arrays como los de R usamos el paquete [NumPy package](http://www.numpy.org/)<sup>1</sup>.
+
+.footnote[
+[1] NumPy is the fundamental package for scientific computing with Python. It is part of the 
+SciPy ecosystem.  
+Jones E, Oliphant E, Peterson P, et al. SciPy: Open Source Scientific Tools for Python, 2001-, http://www.scipy.org/.
+]
+
+--
+```{python eval=FALSE}
+import numpy as np
+python_array = np.array([4, 5, 1, 6, 8])
+```
+
+--
+Observa que en Python se usa el `.` para llamar métodos, por ejemeplo: `numpy.method_name()`.
+
+```{python eval=FALSE}
+python_array.max()
+8
+```
+
+<---
+
+
+
+
+
+
+
