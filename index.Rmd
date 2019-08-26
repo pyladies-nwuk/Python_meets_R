@@ -17,7 +17,8 @@ output:
 layout: true
 
 <div class="my-footer">
-<span> R meets Python  CDMX </span>
+<span> R meets Python  CDMX <a> http://bit.ly/RmeetsPython </a> </span>
+
 <span-right>
 <a href="https://twitter.com/ixek">`r shiny::icon("twitter")` </a> @ixek
 <a href="https://github.com/trallard">`r shiny::icon("github-alt")` </a> @trallard
@@ -27,9 +28,23 @@ layout: true
       
 ---
 
+class: center, middle
+
+# Bienvenidos al primer evento conjunto de PyLadies y Rladies en CDMX
+
+.pull_left[
+![](assets/pyladies.png)
+]
+
+.pull_right[
+![](assets/Rladies.png)
+]
+
+---
+
 # ¡Gracias por venir!
 
-- **Recordemos**: hay un código de conducta que toas y todos debemos observar todo el tiempo. Si notas algo que no va de acuerdo al código de conducta contacta a tus organizadoras.
+- **Recordemos**: hay un código de conducta que todas y todos debemos observar todo el tiempo. Si notas algo que no va de acuerdo al código de conducta contacta a tus organizadoras.
 
 - No vamos a tomar preguntas después de las presentaciones pero puedes hablar con las ponentes en el descanso.
 
@@ -181,13 +196,13 @@ Si tienes un entendimiento general de lo que Python hace y para qué son los mé
 
 Para este tutorial tenemos un JupyterHub en la nube con todos los paquetes y librerías que necesitamos.
 
-- Tienes que acceder en: http://40.87.67.31
+- Tienes que acceder en: http://bit.ly/Pyladies-hub
 
-- Disponible sólo por hoy
+- Disponible sólo por hoy y necesitas una cuenta de GitHub
 
 ## En casa:
 
-- El repositorio es: https://github.com/pyladies-nwuk/Python_meets_R
+- El repositorio es: http://bit.ly/RmeetsPython
 
 
 ---
@@ -521,15 +536,15 @@ Los restantes `r sum(datasummary$Freq[datasummary$Type == "Violin and Piano"])` 
 ---
 
 
-class: inverted, middle
+class: invertse mcenter, iddle
 
 ### Demo
 
 ---
 
-c# Haz tu propio tutorial
+## Haz tu propio tutorial
 
--File -> New File -> Rmarkdown
+File -> New File -> Rmarkdown
 
 Agrega un autor y un título
 
@@ -537,9 +552,10 @@ Puedes usar el demo como inspiración
 
 ---
 
+### R desde Python!!!
 
 
---
+---
 
 
 
