@@ -1,0 +1,289 @@
+---
+title: "Classification of Audio segments by instrument: A Tutorial on using the R package `reticulate` to integrate R and Python."
+author: "Tania Allard"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+ 
+
+# Introduction
+You are going to write your own tutorial by combining your own notes and investigations with the code given in the slides. The first part of the tutorial aims to develop our baseline understanding of the link between the R and Python sessions and running code chunks interactively in R Markdown; the second part covers the importing, modelling and visualisation of the processed audio data.
+
+**The classification problem**
+
+We are going to work with some data derived from 9 pieces of music. Three examples are:
+
+* [Chopin - Ballade No. 1 in G Minor](https://www.youtube.com/watch?v=Zj_psrTUW_w) 
+* [Corelli - Sonata da Chiesa, Op. 1 No. 1 in F major](https://www.youtube.com/watch?v=0fLbzkBRywU)
+* [Mozart - Sonata in F major for piano and violin K 376](https://www.youtube.com/watch?v=iOq_lZWD8Lg)
+
+
+The example and the original Python code to process the audio files and carry out the machine learning analysis methods are by Michael Knight, University of Bristol. 
+ 
+Each of the pieces of music has been segmented into 5-second segments each of which has 5000 features. The features represent the apodised power spectrum of a 5-second segment. 
+
+We will try to classify these segments.
+
+
+# Set up
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE))
+```
+
+## R packages needed
+
+```{r pkgs}
+##########   R    ##########
+library(reticulate)
+library(ggplot2)
+library(readxl)
+
+```
+
+## Python libraries needed
+
+```{python mods}
+########## PYTHON ##########
+import os
+import pandas as pd
+
+# for PCA
+from sklearn.decomposition.pca import PCA
+
+# for plotting
+import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+```
+
+# Part 1: Building our understanding of the 'reticulation'
+
+This section is not required for the analysis of the data but is here to give us some practice in dealing with the linked sessions. 
+
+## Ways to find our working directory
+
+A Python equivalent for R's `getwd()` is from the `os` module.
+
+```{python}
+########## PYTHON ##########
+os.getcwd()
+```
+
+It prints out! with escaped 'windows-way' round slashes
+
+Just like...
+```{r}
+##########   R    ##########
+getwd()
+```
+
+We can also use the the getcwd() method from os in a R chunk.
+Remember to access Python objects of any sort we use `py$`
+Here we access the `os` object's methods BUT in a R-like way using the `$` not a `.`
+```{r}
+##########   R    ##########
+py$os$getcwd()
+```
+
+
+And access R functions in Python chunks in a Python-like way
+```{python}
+########## PYTHON ##########
+r.getwd()
+```
+
+## Ways to read in a file and calculate summary information
+
+Let's read one of the spectrum files in order to investigate passing dataframes between sessions. We can use the `readxl`<sup>1</sup> package. I have added that to the R chunk named `pkgs` 
+
+```{r}
+##########   R    ##########
+spectrum <- read_excel("Piano/01 Ballade No. 1, Op. 23_segments.xlsx")
+```
+
+How many segments (rows) are in this file?
+
+```{r}
+##########   R    ##########
+dim(spectrum)
+```
+ There are `r dim(spectrum)[1]` segments. There are `r dim(spectrum)[2]` columns which are the segment label in the first column and the `r dim(spectrum)[2] - 1` features. The features are named `r names(spectrum)[2]` to `r names(spectrum)[length(spectrum)]`
+
+What is the mean and standard deviation of the second feature?
+
+```{r}
+##########   R    ##########
+mean_2 <- mean(spectrum$`1`)
+sd_2 <- sd(spectrum$`1`)
+```
+The second feature has a $\bar{x} \pm s.d.$ of `r round(mean_2,2 )` $\pm$ `r round(sd_2, 2)`.
+
+Access the dataframe in Python and use python to calculate those same values
+
+Check it's type:
+```{python}
+########## PYTHON ##########
+type(r.spectrum)
+type(r.spectrum["1"])
+```
+The dimensions:
+```{python}
+########## PYTHON ##########
+r.spectrum.shape
+```
+The mean and standard deviation:
+```{python}
+########## PYTHON ##########
+r.spectrum["1"].mean()
+r.spectrum["1"].std()
+```
+
+To read the file in in Python you can use the `Pandas` method `pd.read_excel`
+```{python}
+########## PYTHON ##########
+python_spectrum = pd.read_excel("Piano/01 Ballade No. 1, Op. 23_segments.xlsx")
+```
+
+```{python}
+########## PYTHON ##########
+python_spectrum.shape
+```
+
+```{r}
+##########   R    ##########
+dim(py$python_spectrum)
+```
+
+
+# Part 2: Classification of audio data
+
+## The data
+
+Up to 100 segments were taken from each audio file although there are fewer for pieces shorter than 500 seconds.
+
+```{r echo=FALSE}
+datasummary <- read.table("datasummary.txt", header = T, sep= ",")
+
+tab <- knitr::kable(datasummary[1:3], 
+             format = "html",
+             col.names = c("Instrument", "Piece", "Number of segments"),
+             row.names = FALSE) 
+kableExtra::kable_styling(tab,font_size = 13)
+```
+
+There are two xlsx files for each piece.
+
+* xxxxxx_segments.xlsx  
+  has the segments in rows and the features in columns
+* xxxxxx_SegmentInfo.xlsx  
+  has the metadata for each segment: the name of the piece, the instrument label on the piece, the start and end time of the segment.  
+
+There are `r sum(datasummary$Freq)` segments in total of which `r sum(datasummary$Freq[datasummary$Type == "Piano"])` are from piano pieces and `r sum(datasummary$Freq[datasummary$Type == "Violin"])` are from violin pieces. The remaining `r sum(datasummary$Freq[datasummary$Type == "Violin and Piano"])` pieces are from Mozart's  Sonata piano and violin.
+
+
+## Data import
+
+This will be carried out with Python. The nine "_segments.xlsx" files are read in to a single Pandas dataframe, `df_seg`. This requires nested for loops to iterate through the directories and through the files in the directories. The information about the segments in "_SegmentInfo.xlsx" files are similarly read into a Pandas dataframe, `df_info` and a column is added to capture the instrument labeling.
+
+
+
+```{python}
+########## PYTHON ##########
+# read data in
+dirs_to_use = ["Violin", "Piano", "Violin_and_Piano"]
+
+df_seg = None
+df_info = None
+for d in dirs_to_use:
+    for f in os.listdir(d):
+        if f.endswith("segments.xlsx"):
+            if df_seg is None:
+                df_seg = pd.read_excel(os.path.join(d, f))
+            else:
+                df_seg = df_seg.append(pd.read_excel(os.path.join(d, f)),
+                                       ignore_index = True)
+        elif f.endswith("SegmentInfo.xlsx"):
+            if df_info is None:
+                df_info = pd.read_excel(os.path.join(d, f))
+                df_info["Instrument"] = pd.Series([d] * len(df_info),
+                                                  index = df_info.index)
+            else:
+                df = pd.read_excel(os.path.join(d, f))
+                df["Instrument"] = pd.Series([d]*len(df), index = df.index)
+                df_info = df_info.append(df, ignore_index = True)
+
+
+```
+
+```{python}
+########## PYTHON ##########
+# check all is well
+type(df_seg)
+df_seg.shape
+type(df_info)
+df_info.shape
+```
+
+
+## Analysis
+
+### PCA in Python
+
+```{python}
+########## PYTHON ##########
+# Apply PCA
+mdl = PCA()
+new_data = mdl.fit_transform(df_seg)
+type(new_data)
+```
+
+access info from the new_data object
+
+
+### Visualising the `r emo::ji("snake")` PCA
+
+#### First using Python
+
+Biplot
+```{python}
+########## PYTHON ##########
+# booleans for instrument
+p = df_info["Instrument"] == "Piano"
+v = df_info["Instrument"] == "Violin"
+pv = df_info["Instrument"] == "Violin_and_Piano"
+plt.figure()
+plt.scatter(new_data[p, 0], new_data[p, 1], label = "Piano")
+plt.scatter(new_data[v, 0], new_data[v, 1], label = "Violin")
+plt.scatter(new_data[pv, 0], new_data[pv, 1], label = "Violin_and_Piano")
+plt.legend()
+plt.show()
+```
+
+
+#### Now using R
+
+Biplot
+
+```{r}
+##########   R    ##########
+df <- data.frame(pca1 = py$new_data[ ,1],
+                 pca2 = py$new_data[ ,2],
+                 instrument = py$df_info$Instrument)
+
+ggplot(data = df, aes(x = pca1, y = pca2, color = instrument)) +
+  geom_point()
+```
+
+```{r}
+##########   R    ##########
+ggplot(data = df, aes(x = pca1, y = pca2)) +
+  geom_point() +
+  facet_grid(.~instrument)
+```
+
+
+
+
