@@ -171,29 +171,81 @@ Si tienes un entendimiento general de lo que Python hace y para qué son los mé
    ```
 
 * Paquetes de Python y R necesarios (no listados acá)
----
-
-
-class: inverse, center, middle
-
-# Ya comienza por favaaaar `r emo::ji("snake")`
 
 ---
 
+# Acceder a los materiales 
+
+## JupyterHub
+
+Para este tutorial tenemos un JupyterHub en la nube con todos los paquetes y librerías que necesitamos.
+
+- Tienes que acceder en: http://40.87.67.31
+
+- Disponible sólo por hoy
+
+## En casa:
+
+- El repositorio es: https://github.com/pyladies-nwuk/Python_meets_R
+
+
+---
+
+
+## Vamos a organizarnos
+
+.pull-left[
+Vamos a crear un projecto
+
+File | New Project | Existing Directory
+
+Browse
+
+Abre el directorio "ML_musical"
+]
+
+.pull-right[
+![rstudio's Create Project from Existing Directory window](assets/newproject.png)]
+
+---
+
+# Usando Python desde la terminal
+
+## `r emo::ji("purple heart")` Comenzar una sesión de Python
+
+Vamos a usar el método `repl_python()`:
+
+```{r eval=FALSE}
+> library('reticulate')
+
+> repl_python() 
+*Python 3.7.3 (/opt/conda/bin/python)
+*Reticulate 1.13 REPL -- A Python interpreter in R.
+>>>  
+```
+
+
+Inmediatamente te indica que versión de Python estás usando:
+
+--
+
+`>>>` Si ves esto quiere decir que estás en el REPL de Python
+
+---
 
 ## Fundamentos de Python
 
 Vamos a empezar creando un array
 
-En R:
+En R basta con hacer:
 ```{r eval=FALSE}
-r_array <- c(4, 5, 1, 6, 8)
+> r_array <- c(4, 5, 1, 6, 8)
 ```
 
 --
 En Python usamos listas:
 ```{python eval=FALSE}
-python_list = [4, 5, 1, 6, 8]
+>>> python_list = [4, 5, 1, 6, 8]
 ```
 
 ---
@@ -244,42 +296,152 @@ Jones E, Oliphant E, Peterson P, et al. SciPy: Open Source Scientific Tools for 
 
 --
 ```{python eval=FALSE}
-import numpy as np
-python_array = np.array([4, 5, 1, 6, 8])
+>>> import numpy as np
+>>> python_array = np.array([4, 5, 1, 6, 8])
 ```
 
 --
-Observa que en Python se usa el `.` para llamar métodos, por ejemeplo: `numpy.method_name()`.
+Observa que en Python se usa el `.` para llamar métodos, por ejemplo: `numpy.method_name()`.
 
 ```{python eval=FALSE}
-python_array.max()
-8
+>>> python_array.max()
+*8
 ```
 
 ---
 
-# Usando Python desde la terminal
+Podemos checar el typo de objeto de nuestro array:
 
-## `r emo::ji("purple heart")` Comenzar una sesión de Python
+```{python eval=FALSE}
+>>> type(python_array)
+<class 'numpy.ndarray>
+```
 
-Con `repl_python()`:
+--
+Y el tamaño del array
 
-```{r eval=FALSE}
->  repl_python() 
-Python 3.7.3 (C:\PROGRA~3\ANACON~1\python.exe)
-Reticulate 1.12.0.9003 REPL -- A Python interpreter in R
->>>  
+```{python eval=FALSE}
+>>> python_array.size
 ```
 
 
---
-
-
-`>>>` Si ves esto quiere decir que estás en el REPL de Python
+El tamaño es un atributo de los objetos de tipo array en Numpy (y otros objetos).
 
 --
+Para ver todos los atributos de un objeto puedes usar:
+```{python eval=FALSE}
+>>>dir(python_array)
+```
+
+---
+
+## ¿En dónde está el array?
+
+Podemos accederlo desde R
+```{r eval=FALSE}
+> py$python_array
+[1] 4 5 1 6 8
+```
 
 
+y podemos usar TAB después de `py$`
+
+---
+
+## Acceder objetos desde R
+
+`reticulate` hace que los objetos se comporten como esperaríamos en RÑ
+
+```{r eval=FALSE}
+> py$python_array * 2
+[1]  8 10  2 12 16
+```
+
+```{r eval=FALSE}
+> py$python_array * py$python_array
+[1] 16 25  1 36 64
+```
+
+--
+Porque se convierten en objetos de R cuando los usamos
+
+```{r eval=FALSE}
+> class(py$python_array)
+[1] "array"
+```
+
+`py$python_array` es un arreglo uni-dimensional
+
+
+numpy.ndarray $\rightarrow$ array
+
+---
+
+# Funciones en objetos creados en Python 
+
+Ahora podemos usar métodos de R en objetos creados en Python. Por ejemplo:
+
+```{r eval=FALSE}
+> mean(py$python_array)
+[1] 4.8
+```
+
+--
+... y la longitud
+```{r eval=FALSE}
+> length(py$python_array)
+[1] 5
+```
+
+--
+Se pueden asignar los objetos explícitamente:
+
+```{r eval=FALSE}
+> r_array <- py$python_array
+```
+
+---
+
+# Métodos de Python en objetos creados en Python
+
+![](assets/nparray.png)
+
+Desde R tenemos acceso al objeto de `np` que es como importamos Numpy en Python.
+
+---
+
+# Métodos de Python en objetos creados en Python
+
+
+.pull-left[
+
+`r emo::ji("snake")` En Python `np` aplicamos los métodos de la siguiente forma: 
+
+_`object_name.method_name()`_
+
+Por ejemplo encontramos la media de `python_array` con:
+
+```{r eval=FALSE}
+>>> python_array.mean()
+4.8
+```
+]
+
+--
+
+.pull-right[
+
+En R accedemos métodos `np` de la siguiente manera:
+
+`py$np$` _`method_name(object_name)`_
+
+Para usar el método mean en `py$python_array`:
+
+```{r eval=FALSE}
+> py$np$mean(py$python_array)
+[1] 4.8
+```
+]
 
 
 
