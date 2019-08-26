@@ -1,0 +1,4 @@
+[submodule "r_wrapper_in_python"]
+	path = r_wrapper_in_python
+	url = git@github.com:valerybriz/breakout_detection_wraper.git
+	branch = master
