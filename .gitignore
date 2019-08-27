@@ -174,3 +174,5 @@ dmypy.json
 deployments/jupyterhub-cluster/secrets/
 
 jupyterhub-deploy.azcli
+
+*.azcli
