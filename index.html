@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Domando a la bestia: Python en R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tania Allard" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <link href="libs/font-awesome-5.3.1/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome-5.3.1/css/v4-shims.min.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link rel="stylesheet" href="css/footer.css" type="text/css" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+layout: true
+
+&lt;div class="my-footer"&gt;
+&lt;span&gt; R meets Python  CDMX &lt;a&gt; http://bit.ly/RmeetsPython &lt;/a&gt; &lt;/span&gt;
+
+&lt;span-right&gt;
+&lt;a href="https://twitter.com/ixek"&gt;<i class="fab fa-twitter"></i> &lt;/a&gt; @ixek
+&lt;a href="https://github.com/trallard"&gt;<i class="fab fa-github-alt"></i> &lt;/a&gt; @trallard
+&lt;/span-right&gt;&lt;/div&gt;
+
+
+      
+---
+
+class: center, middle
+
+# Bienvenidos al primer evento conjunto de PyLadies y Rladies en CDMX
+
+.pull_left[
+![](assets/pyladies.png)
+]
+
+.pull_right[
+![](assets/Rladies.png)
+]
+
+---
+
+# ¡Gracias por venir!
+
+- **Recordemos**: hay un código de conducta que todas y todos debemos observar todo el tiempo. Si notas algo que no va de acuerdo al código de conducta contacta a tus organizadoras.
+
+- No vamos a tomar preguntas después de las presentaciones pero puedes hablar con las ponentes en el descanso.
+
+- Necesitas tener una cuenta de GitHub para seguir el tutorial.
+
+---
+class: middle 
+
+# Gracias a todas las personas que hicieron esto posible
+
+- Pyladies CDMX
+
+- RLadies CDMX
+
+- Microsoft developer advocacy (Cynthia Zanoni ✨)
+
+- Stickermule
+
+- Platzi
+
+
+---
+
+# ¿Quién soy y  por qué estoy acá?
+.pull-left[
+![](assets/Bit_PUBLIC_SPEAKING.png)
+]
+
+.pull_right[
+## Tania Allard
+
+- Developer Advocate en Microsoft
+
+- Organizadora de PyLadies NorthWest UK
+
+- Miembro Rforwards - comunidad
+
+- Fellow de la Python Software Foundation
+
+- Y un montón de cosas mas
+]
+
+---
+class: center, middle
+
+# También 💜 Python y R
+
+
+---
+
+# Objetivos
+
+Este tutorial está diseñado para:
+- usuarios principiantes e intermedios de R y/o Python
+
+
+# Qué vamos a aprender:
+- **Principiante**: uso básico de Python y su uso desde R para proyectos multi lenguaje
+
+- **Intermedio**: mejore prácticas para trabajar con Python desde R
+
+---
+
+# Al final del tutorial podremos:
+
+- Pasar objetos entre sesiones simultáneasd de Ptyhon y R
+
+- Usar métodos de Python en código de R
+
+- Usar snippets de Python dentro de tu workflow en R (no necesitamos comprender al 100 lo que hacen 🤷)
+
+Si tienes un entendimiento general de lo que Python hace y para qué son los métodos puedes usar reticulate.
+
+---
+
+# ¿Por qué usar reticulate?
+
+### Hacer tu trabajo más rápido
+- Los scientíficos de datos nos caracterisamos por nuestra habilidad para resolver problemas
+- El lenguaje debe ser secundario ☝️
+- Evitar refactorizar o mantender dos codebases
+
+### Facilitar colaboración
+- Te permite aprovechar la experiencia y habilidades de todo el equipo
+- Resuelve el problema más grande de la industria de datos: la gente&lt;sup&gt;1&lt;/sup&gt;
+- Muchos scientíficos de datos usan los dos leguajes y son más felices&lt;sup&gt;2&lt;/sup&gt;
+
+.footnote[
+[1] Mangano, 2019  
+[2] Stack Overflow Developers' Survey, NanoMathius, 2018  
+]
+
+
+---
+
+# Reticulate
+
+### Características principales
+.pull_right[
+![reticulate-logo](assets/reticulated_python.png)]
+
+.pull_left[
+1. Habilidad de llamar Python desde R
+
+2. Traducción tntre objetos de R y Python
+
+3. Uso flexible de diferentes entornos de Python
+]
+
+---
+
+# Reticulate
+
+### Puedes usar Python de las siguientes maneras
+
+1. Interactivo usando la consola 
+`repl_python()`
+
+2. Ejecutando scripts de Python
+
+3. Importando módulos de Python
+
+4. En Rmarkdown
+
+---
+
+## Requisitos
+
+* [RStudio 1.2](https://www.rstudio.com/products/rstudio/) 
+
+* Python  
+  [Anaconda 3](https://www.anaconda.com/distribution/) 
+  
+  
+--
+
+* `reticulate` Yo casi siempre uso la versión de desarrollo:
+   
+   ```r
+   devtools::install_github("rstudio/reticulate")  
+   ```
+
+* Paquetes de Python y R necesarios (no listados acá)
+
+---
+
+# Acceder a los materiales 
+
+## JupyterHub
+
+Para este tutorial tenemos un JupyterHub en la nube con todos los paquetes y librerías que necesitamos.
+
+- Tienes que acceder en: http://bit.ly/Pyladies-hub
+
+- Disponible sólo por hoy y necesitas una cuenta de GitHub
+
+## En casa:
+
+- El repositorio es: http://bit.ly/RmeetsPython
+
+
+---
+
+
+## Vamos a organizarnos
+
+.pull-left[
+Vamos a crear un projecto
+
+File | New Project | Existing Directory
+
+Browse
+
+Abre el directorio "ML_musical"
+]
+
+.pull-right[
+![rstudio's Create Project from Existing Directory window](assets/newproject.png)]
+
+---
+
+# Usando Python desde la terminal
+
+## 💜 Comenzar una sesión de Python
+
+Vamos a usar el método `repl_python()`:
+
+
+```r
+&gt; library('reticulate')
+
+&gt; repl_python() 
+*Python 3.7.3 (/opt/conda/bin/python)
+*Reticulate 1.13 REPL -- A Python interpreter in R.
+&gt;&gt;&gt;  
+```
+
+
+Inmediatamente te indica que versión de Python estás usando:
+
+--
+
+`&gt;&gt;&gt;` Si ves esto quiere decir que estás en el REPL de Python
+
+---
+
+## Fundamentos de Python
+
+Vamos a empezar creando un array
+
+En R basta con hacer:
+
+```r
+&gt; r_array &lt;- c(4, 5, 1, 6, 8)
+```
+
+--
+En Python usamos listas:
+
+```python
+&gt;&gt;&gt; python_list = [4, 5, 1, 6, 8]
+```
+
+---
+
+
+## Fundamentos de Python
+
+Pero en Python las listas no siempre funcionan como un usuario de R esperaría.
+
+Por ejemplo, cuál es el resultado de:
+
+
+```python
+python_list = [4, 5, 1, 6, 8]
+*python_list * 2
+```
+
+--
+
+¿Esto?
+
+```python
+python_list = [4, 5, 1, 6, 8]
+python_list * 2
+*[8, 10, 2, 12, 16]
+```
+
+--
+No, en realidad es:
+
+```python
+python_list = [4, 5, 1, 6, 8]
+python_list * 2
+*[4, 5, 1, 6, 8, 4, 5, 1, 6, 8]
+```
+
+
+😲
+
+---
+
+# Fundamentos de Python
+
+Para tener funcionalidades de arrays como los de R usamos el paquete [NumPy package](http://www.numpy.org/)&lt;sup&gt;1&lt;/sup&gt;.
+
+.footnote[
+[1] NumPy is the fundamental package for scientific computing with Python. It is part of the 
+SciPy ecosystem.  
+Jones E, Oliphant E, Peterson P, et al. SciPy: Open Source Scientific Tools for Python, 2001-, http://www.scipy.org/.
+]
+
+--
+
+```python
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; python_array = np.array([4, 5, 1, 6, 8])
+```
+
+--
+Observa que en Python se usa el `.` para llamar métodos, por ejemplo: `numpy.method_name()`.
+
+
+```python
+&gt;&gt;&gt; python_array.max()
+*8
+```
+
+---
+
+Podemos checar el typo de objeto de nuestro array:
+
+
+```python
+&gt;&gt;&gt; type(python_array)
+&lt;class 'numpy.ndarray&gt;
+```
+
+--
+Y el tamaño del array
+
+
+```python
+&gt;&gt;&gt; python_array.size
+```
+
+
+El tamaño es un atributo de los objetos de tipo array en Numpy (y otros objetos).
+
+--
+Para ver todos los atributos de un objeto puedes usar:
+
+```python
+&gt;&gt;&gt;dir(python_array)
+```
+
+---
+
+## ¿En dónde está el array?
+
+Podemos accederlo desde R
+
+```r
+&gt; py$python_array
+[1] 4 5 1 6 8
+```
+
+
+y podemos usar TAB después de `py$`
+
+---
+
+## Acceder objetos desde R
+
+`reticulate` hace que los objetos se comporten como esperaríamos en RÑ
+
+
+```r
+&gt; py$python_array * 2
+[1]  8 10  2 12 16
+```
+
+
+```r
+&gt; py$python_array * py$python_array
+[1] 16 25  1 36 64
+```
+
+--
+Porque se convierten en objetos de R cuando los usamos
+
+
+```r
+&gt; class(py$python_array)
+[1] "array"
+```
+
+`py$python_array` es un arreglo uni-dimensional
+
+
+numpy.ndarray `\(\rightarrow\)` array
+
+---
+
+# Funciones en objetos creados en Python 
+
+Ahora podemos usar métodos de R en objetos creados en Python. Por ejemplo:
+
+
+```r
+&gt; mean(py$python_array)
+[1] 4.8
+```
+
+--
+... y la longitud
+
+```r
+&gt; length(py$python_array)
+[1] 5
+```
+
+--
+Se pueden asignar los objetos explícitamente:
+
+
+```r
+&gt; r_array &lt;- py$python_array
+```
+
+---
+
+# Métodos de Python en objetos creados en Python
+
+![](assets/nparray.png)
+
+Desde R tenemos acceso al objeto de `np` que es como importamos Numpy en Python.
+
+---
+
+# Métodos de Python en objetos creados en Python
+
+
+.pull-left[
+
+🐍 En Python aplicamos los métodos de `np` de la siguiente forma: 
+
+_`object_name.method_name()`_
+
+Por ejemplo encontramos la media de `python_array` con:
+
+
+```r
+&gt;&gt;&gt; python_array.mean()
+4.8
+```
+]
+
+--
+
+.pull-right[
+
+En R accedemos métodos `np` de la siguiente manera:
+
+`py$np$` _`method_name(object_name)`_
+
+Para usar el método mean en `py$python_array`:
+
+
+```r
+&gt; py$np$mean(py$python_array)
+[1] 4.8
+```
+]
+
+---
+
+class: inverse, middle, center
+
+# Python en R Markdown
+
+---
+
+
+# Python en R Markdown
+## Objetivo
+
+1. Desarrollar un mini tutorial para desarrollar nuestro entendimiento entre R y Python.
+
+--
+2. Importar, modelar y  visualizar datos de audio.
+
+--
+
+Vamos a crear algo como [clasificador_musica.html](clasificador_musica.html)
+
+---
+
+# Los datos
+
+Vamos a trabajar con data de 9 piezas musicales:
+
+* [Chopin - Ballade No. 1 in G Minor](https://www.youtube.com/watch?v=Zj_psrTUW_w) 
+* [Corelli - Sonata da Chiesa, Op. 1 No. 1 in F major](https://www.youtube.com/watch?v=0fLbzkBRywU)
+* [Mozart - Sonata in F major for piano and violin K 376](https://www.youtube.com/watch?v=iOq_lZWD8Lg)
+
+--
+
+El ejemplo original es de Michael Knight, de la Universidad de Bristol. 
+
+-- 
+
+Cada una de las piezas han sido segmentada en piezas de 5 segundos con 5000 features cada una.  Cada feature representa la distribución de energía de cada segmento de 5 segundos.  
+
+
+Vamos a clasificar los segmentos.
+
+
+---
+## Los datos
+
+ 
+Hay hast 100 segmentos por pieza.
+&lt;table class="table" style="font-size: 13px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Instrument &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Piece &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Number of segments &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Piano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 01 Ballade No. 1, Op. 23.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Piano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1-01 Sonata No. 1 In F Sharp Minor, Op. 11_ I. Introduzione. un Poco Adagio ,Allegro Vivace.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Piano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 5-01 Beethoven_ Piano Sonata No. 14 in C-Sharp Minor, Op. 27 No. 2, 'Moonlight'_ I. Adagio sostenuto.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Piano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 9-05 Beethoven_ Piano Sonata No. 29 in B-Flat Major, Op. 106, 'Hammerklavier'_ I. Allegro.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Violin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 05 No.2 in A major RV 31_ I. Preludio a Capriccio. Presto.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Violin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1-01 Sonata da chiesa a tre in F Major, Op. 1, No. 1_ I. Grave.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Violin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1-02 Sonata da chiesa a tre in F Major, Op. 1, No. 1_ II. Allegro.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Violin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 24 No.11 in D major RV 9_ II. Fantasia. Presto.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Violin and Piano &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3-01 Sonata for Piano and Violin in F, K. 376_ I. Allegro.m4a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Los datos
+
+Dos xlxs por cada pieza 
+
+* *name*_segments.xlsx  
+  segmentos x features (row x column)
+* *name*_SegmentInfo.xlsx  
+  metadata por segmento: nombre de la pieza,  instrumento en la pieza, y el tiempo de comienzo y final del segmento
+  
+--
+
+Hay 496 segmentos en total, de los cuales 374  son de piezas de piano y 63  corresponden al violín.
+Los restantes 59 son de la sonata para piano y violin de Mozart.
+
+---
+
+
+class: invertse mcenter, iddle
+
+### Demo
+
+---
+
+## Haz tu propio tutorial
+
+File -&gt; New File -&gt; Rmarkdown
+
+Agrega un autor y un título
+
+Puedes usar el demo como inspiración
+
+---
+
+### R desde Python!!!
+
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": ""
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
