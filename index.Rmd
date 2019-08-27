@@ -28,17 +28,30 @@ layout: true
       
 ---
 
-class: center, middle
+class: inverse, right, bottom
 
-# Bienvenidos al primer evento conjunto de PyLadies y Rladies en CDMX
+# R meets Python - CDMX
 
-.pull_left[
-![](assets/pyladies.png)
+### PyLadies, Rladies & Tania Allard 
+
+2019-08-27 
+
+https://bit.ly/RmeetsPython
+
+
+---
+
+# Bienvenidos al primer evento conjunto de PyLadies y Rladies en CDMX `r emo::ji("purple heart")`
+
+
+.pull-left[
+<img src="assets/pyladies.png" width="60%"/>
 ]
 
-.pull_right[
-![](assets/Rladies.png)
+.pull-right[
+<img src="assets/Rladies.png" width="60%" />
 ]
+
 
 ---
 
@@ -46,7 +59,7 @@ class: center, middle
 
 - **Recordemos**: hay un código de conducta que todas y todos debemos observar todo el tiempo. Si notas algo que no va de acuerdo al código de conducta contacta a tus organizadoras.
 
-- No vamos a tomar preguntas después de las presentaciones pero puedes hablar con las ponentes en el descanso.
+- No  hay tiempo para preguntas después de las presentaciones pero puedes hablar con las ponentes en el descanso.
 
 - Necesitas tener una cuenta de GitHub para seguir el tutorial.
 
@@ -67,16 +80,31 @@ class: middle
 
 
 ---
+# Agenda
+
+**6:30 -7:00** - Networking
+
+**7:00-8:00** - Charlas (Karen Estefanía González, Mariana Carmona, Dulce Ambrocio, Diana Elisa García Cortés)
+
+**8:00-8:30** -  Networking y preparación para tutorial
+
+**8:30 - 9:00** - Tutorial: Usando R y Python desde reticulate y r2py
+
+---
 
 # ¿Quién soy y  por qué estoy acá?
+
+
 .pull-left[
-![](assets/Bit_PUBLIC_SPEAKING.png)
+<img src="assets/Bit_PUBLIC_SPEAKING.png" width="90%" align="center" />
 ]
 
-.pull_right[
+.pull-right[
 ## Tania Allard
 
 - Developer Advocate en Microsoft
+
+- Google developer expert: Machine learning / Tensorflow
 
 - Organizadora de PyLadies NorthWest UK
 
@@ -91,26 +119,26 @@ class: middle
 class: center, middle
 
 # También 💜 Python y R
-
+ 
 
 ---
 
 # Objetivos
 
 Este tutorial está diseñado para:
-- usuarios principiantes e intermedios de R y/o Python
+- uusurios principiantes e intermedios de R y/o Python
 
+- Personas interesadas en R o Python
+#
+ Qué vamos a aprender:
+- **Principiante**: ucomo usar Pythondesde R para proyectos multi -enguaje
 
-# Qué vamos a aprender:
-- **Principiante**: uso básico de Python y su uso desde R para proyectos multi lenguaje
-
-- **Intermedio**: mejore prácticas para trabajar con Python desde R
-
+- **Intermedio**: mintegrar Python y R en proyectos de ciencia de datos de forma eficiente
 ---
 
 # Al final del tutorial podremos:
 
-- Pasar objetos entre sesiones simultáneasd de Ptyhon y R
+- Pasar objetos entre sesiones simultáneasdde Ptyton y R
 
 - Usar métodos de Python en código de R
 
@@ -123,11 +151,11 @@ Si tienes un entendimiento general de lo que Python hace y para qué son los mé
 # ¿Por qué usar reticulate?
 
 ### Hacer tu trabajo más rápido
-- Los scientíficos de datos nos caracterisamos por nuestra habilidad para resolver problemas
+- Los sientíficos de datos nos caracterisamos por nuestra habilidad para resolver problemas
 - El lenguaje debe ser secundario `r emo::ji("point_up")`
 - Evitar refactorizar o mantender dos codebases
 
-### Facilitar colaboración
+## Facilitar colaboración
 - Te permite aprovechar la experiencia y habilidades de todo el equipo
 - Resuelve el problema más grande de la industria de datos: la gente<sup>1</sup>
 - Muchos scientíficos de datos usan los dos leguajes y son más felices<sup>2</sup>
@@ -139,23 +167,21 @@ Si tienes un entendimiento general de lo que Python hace y para qué son los mé
 
 
 ---
+background-image: url(assets/reticulated_python.png)
+background-position: 95% 7%
 
-# Reticulate
+## Reticulate
 
 ### Características principales
-.pull_right[
-![reticulate-logo](assets/reticulated_python.png)]
 
-.pull_left[
 1. Habilidad de llamar Python desde R
 
 2. Traducción tntre objetos de R y Python
 
 3. Uso flexible de diferentes entornos de Python
-]
+
 
 ---
-
 # Reticulate
 
 ### Puedes usar Python de las siguientes maneras
@@ -198,7 +224,7 @@ Para este tutorial tenemos un JupyterHub en la nube con todos los paquetes y lib
 
 - Tienes que acceder en: http://bit.ly/Pyladies-hub
 
-- Disponible sólo por hoy y necesitas una cuenta de GitHub
+- Disponible sólo por hoy y necesitas una cuenta de GitHub para poder acceder
 
 ## En casa:
 
@@ -207,6 +233,12 @@ Para este tutorial tenemos un JupyterHub en la nube con todos los paquetes y lib
 
 ---
 
+class: inverse, middle, center
+
+# Vamos a comenzar
+
+
+---
 
 ## Vamos a organizarnos
 
@@ -246,12 +278,14 @@ Inmediatamente te indica que versión de Python estás usando:
 --
 
 `>>>` Si ves esto quiere decir que estás en el REPL de Python
+`>` Indica que estás usando R
 
 ---
 
+
 ## Fundamentos de Python
 
-Vamos a empezar creando un array
+Vamos a empezar creando un array (o arreglo)
 
 En R basta con hacer:
 ```{r eval=FALSE}
@@ -313,6 +347,7 @@ Jones E, Oliphant E, Peterson P, et al. SciPy: Open Source Scientific Tools for 
 --
 ```{python eval=FALSE}
 >>> import numpy as np
+
 >>> python_array = np.array([4, 5, 1, 6, 8])
 ```
 
@@ -330,7 +365,7 @@ Podemos checar el typo de objeto de nuestro array:
 
 ```{python eval=FALSE}
 >>> type(python_array)
-<class 'numpy.ndarray>
+<class 'numpy.ndarray'>
 ```
 
 --
@@ -366,7 +401,7 @@ y podemos usar TAB después de `py$`
 
 ## Acceder objetos desde R
 
-`reticulate` hace que los objetos se comporten como esperaríamos en RÑ
+`reticulate` hace que los objetos se comporten como esperaríamos en R:
 
 ```{r eval=FALSE}
 > py$python_array * 2
